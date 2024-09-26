@@ -7,7 +7,7 @@ const ConfirmSignUpToken = () => {
   async function handleVerify(e) {
     e.preventDefault();
     const { data, error } = await supabase.auth.verifyOtp({
-      email: "ssudaraka@gmail.com",
+      email: "",
       token: tokenRef?.current?.value ?? "",
       type: "email",
     });
