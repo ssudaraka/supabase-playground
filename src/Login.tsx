@@ -113,7 +113,7 @@ function Login() {
   async function handleSignInWithSAML() {
     console.log("Start SAML sign in");
     const { data, error } = await supabase.auth.signInWithSSO({
-      domain: "contoso.com",
+      domain: "example.com",
     });
 
     if (error) {

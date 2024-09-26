@@ -2,6 +2,7 @@ import { Outlet, useNavigate } from "react-router-dom";
 import "./App.css";
 import { supabase } from "./utils/supabaseClient";
 import { useEffect, useState } from "react";
+import type { Session } from "@supabase/supabase-js";
 // import { AuthClient } from "@supabase/supabase-js";
 
 // const AUTH_URL = "http://localhost:9999";
@@ -11,7 +12,7 @@ import { useEffect, useState } from "react";
 // });
 
 function App() {
-  const [session, setSession] = useState(null);
+  const [session, setSession] = useState<Session | null>(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -23,6 +24,7 @@ function App() {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
       console.log("auth state changed");
+      console.log("event:", _event);
       setSession(session);
     });
 

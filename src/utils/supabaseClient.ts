@@ -19,4 +19,12 @@ const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 //   },
 // };
 
+// export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+//   global: {
+//     headers: {
+//       "x-forwarded-for": "10.10.10.10",
+//     },
+//   },
+// });
+
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);

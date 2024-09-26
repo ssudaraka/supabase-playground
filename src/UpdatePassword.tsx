@@ -15,8 +15,8 @@ const UpdatePassword = () => {
   }
 
   return (
-    <div>
-      <h1>Update Password</h1>
+    <div className="px-2 py-2">
+      <h1 className="text-2xl font-bold text-gray-900">Update Password</h1>
       <form onSubmit={handleUpdatePassword}>
         <input type="text" placeholder="password" ref={passwordRef}></input>
         <button type="submit">Update</button>

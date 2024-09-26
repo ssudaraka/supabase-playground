@@ -22,6 +22,12 @@ function Profile() {
     console.log(data);
   };
 
+  const handleRefreshSession = async () => {
+    const { data, error } = await supabase.auth.refreshSession();
+    console.log(data);
+    console.log(error);
+  };
+
   const handlePhoneUpdate = async () => {
     const { data, error } = await supabase.auth.updateUser({
       phone: "94771867199",
@@ -148,11 +154,29 @@ function Profile() {
       >
         Get User
       </button>
+      <button
+        className="bg-blue-500 text-white py-2 px-4 mr-2 rounded"
+        onClick={handleRefreshSession}
+      >
+        Refresh Session
+      </button>
       <a
         href="/change-email"
         className="bg-blue-500 text-white py-2 px-4 mr-2 rounded"
       >
         Change Email
+      </a>
+      <a
+        href="/change-phone"
+        className="bg-blue-500 text-white py-2 px-4 mr-2 rounded"
+      >
+        Change Phone
+      </a>
+      <a
+        href="/update-password"
+        className="bg-blue-500 text-white py-2 px-4 mr-2 rounded"
+      >
+        Change Password
       </a>
     </div>
   );

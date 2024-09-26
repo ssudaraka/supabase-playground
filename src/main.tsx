@@ -13,6 +13,8 @@ import PasswordlessLogin from "./PasswordlessLogin.tsx";
 import UpdatePassword from "./UpdatePassword.tsx";
 import ChangeEmail from "./ChangeEmail.tsx";
 import VerifyToken from "./VerifyToken.tsx";
+import ChangePhone from "./ChangePhone.tsx";
+import ConfirmPhoneChange from "./ConfirmPhoneChange.tsx";
 
 import "./index.css";
 
@@ -64,6 +66,14 @@ const router = createBrowserRouter([
       {
         path: "verify-token",
         element: <VerifyToken />,
+      },
+      {
+        path: "change-phone",
+        element: <ChangePhone />,
+      },
+      {
+        path: "confirm-phone-change",
+        element: <ConfirmPhoneChange />,
       },
     ],
   },
