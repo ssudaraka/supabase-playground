@@ -7,7 +7,7 @@ const ConfirmPhoneChange = () => {
   async function handleUpdatePhone(event: FormEvent) {
     event.preventDefault();
     const { data, error } = await supabase.auth.verifyOtp({
-      phone: "94713522343",
+      phone: "",
       token: tokenRef?.current?.value ?? "",
       type: "phone_change",
     });
