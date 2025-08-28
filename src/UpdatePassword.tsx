@@ -8,6 +8,9 @@ const UpdatePassword = () => {
     event.preventDefault();
     const { data, error } = await supabase.auth.updateUser({
       password: passwordRef?.current?.value ?? "",
+      data: {
+        location: "San Francisco, CA",
+      },
     });
 
     console.log(data);

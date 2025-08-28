@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import App from "./App.tsx";
+import Layout from "./Layout.tsx";
 import Signup from "./Signup.tsx";
 import Login from "./Login.tsx";
 import Realtime from "./Realtime.tsx";
@@ -15,13 +15,18 @@ import ChangeEmail from "./ChangeEmail.tsx";
 import VerifyToken from "./VerifyToken.tsx";
 import ChangePhone from "./ChangePhone.tsx";
 import ConfirmPhoneChange from "./ConfirmPhoneChange.tsx";
+import EnrollMfaTotp from "./EnrollMfaTotp.tsx";
+import EnrollMfaPhone from "./EnrollMfaPhone.tsx";
+import PasswordlessLoginEmail from "./PasswordlessLoginEmail.tsx";
+import EdgeFunctions from "./EdgeFunctions.tsx";
+import Admin from "./Admin.tsx";
 
 import "./index.css";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App />,
+    element: <Layout />,
     children: [
       {
         path: "signup",
@@ -75,6 +80,26 @@ const router = createBrowserRouter([
         path: "confirm-phone-change",
         element: <ConfirmPhoneChange />,
       },
+      {
+        path: "enroll-mfa-totp",
+        element: <EnrollMfaTotp />,
+      },
+      {
+        path: "enroll-mfa-phone",
+        element: <EnrollMfaPhone />,
+      },
+      {
+        path: "passwordless-login-email",
+        element: <PasswordlessLoginEmail />,
+      },
+      {
+        path: "admin",
+        element: <Admin />,
+      },
+      {
+        path: "edge-functions",
+        element: <EdgeFunctions />,
+      },
     ],
   },
 ]);
@@ -82,5 +107,5 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <RouterProvider router={router} />
-  </React.StrictMode>
+  </React.StrictMode>,
 );

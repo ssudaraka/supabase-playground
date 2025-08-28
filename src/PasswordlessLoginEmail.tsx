@@ -2,16 +2,22 @@ import { supabase } from "./utils/supabaseClient";
 import { useNavigate } from "react-router-dom";
 import { useRef } from "react";
 
-const PasswordlessLogin = () => {
+const PasswordlessLoginEmail = () => {
   const navigate = useNavigate();
-  const phoneRef = useRef<HTMLInputElement>(null);
+  const emailRef = useRef<HTMLInputElement>(null);
 
   async function handlePasswordlessLogin(e) {
     e.preventDefault();
 
-    if (phoneRef.current) {
+    if (emailRef.current) {
       const { data, error } = await supabase.auth.signInWithOtp({
-        phone: phoneRef.current.value,
+        email: emailRef.current.value,
+        options: {
+          data: {
+            fname: "supun",
+            lname: "sudaraka",
+          },
+        },
       });
 
       if (error) {
@@ -21,21 +27,21 @@ const PasswordlessLogin = () => {
 
       console.log(data);
 
-      if (data) {
-        console.log(data);
-        localStorage.setItem("phone", phoneRef.current.value);
-        navigate("/verify-token");
-      }
+      // if (data) {
+      //   console.log(data);
+      //   localStorage.setItem("phone", phoneRef.current.value);
+      //   navigate("/verify-token");
+      // }
     }
   }
 
   async function handleResend() {
     console.log("Resend");
 
-    if (phoneRef.current) {
+    if (emailRef.current) {
       const { data, error } = await supabase.auth.resend({
         type: "signup",
-        email: phoneRef?.current?.value,
+        email: emailRef?.current?.value,
       });
 
       console.log(data);
@@ -46,16 +52,16 @@ const PasswordlessLogin = () => {
   return (
     <div className="w-1/2 mx-auto mt-10 flex flex-col items-center justify-center">
       <form className="w-1/2" onSubmit={handlePasswordlessLogin}>
-        <label htmlFor="phone" className="block text-sm">
+        <label htmlFor="email" className="block text-sm">
           Phone
         </label>
         <input
-          id="phone"
-          name="phone"
+          id="email"
+          name="email"
           type="text"
-          ref={phoneRef}
+          ref={emailRef}
           className="block w-full py-1 px-1 rounded border border-gray-200"
-          placeholder="Enter your phone number"
+          placeholder="Enter your Enter your email"
         />
         <button
           type="submit"
@@ -76,4 +82,4 @@ const PasswordlessLogin = () => {
   );
 };
 
-export default PasswordlessLogin;
+export default PasswordlessLoginEmail;
