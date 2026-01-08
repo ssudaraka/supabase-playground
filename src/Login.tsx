@@ -1,4 +1,4 @@
-import { FormEvent, useEffect, useRef } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
 import { supabase } from "./utils/supabaseClient";
 import { useNavigate } from "react-router-dom";
 
@@ -14,6 +14,8 @@ function Login() {
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -32,22 +34,40 @@ function Login() {
 
   async function handleLogin(event: FormEvent) {
     event.preventDefault();
+    setIsLoading(true);
+    setError(null);
 
     if (emailRef.current && passwordRef.current) {
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email: emailRef.current.value,
-        password: passwordRef.current.value,
-      });
+      try {
+        const { data, error } = await supabase.auth.signInWithPassword({
+          email: emailRef.current.value,
+          password: passwordRef.current.value,
+        });
 
-      if (error) {
-        console.log(error);
-        return;
-      }
+        if (error) {
+          setError(
+            error.message || "Invalid email or password. Please try again.",
+          );
+          console.log(error);
+          return;
+        }
 
-      if (data.session) {
-        console.log(data);
-        navigate("/profile");
+        if (data.session) {
+          console.log(data);
+          navigate("/profile");
+        }
+      } catch (err) {
+        setError(
+          err instanceof Error
+            ? err.message
+            : "An unexpected error occurred. Please try again.",
+        );
+        console.error(err);
+      } finally {
+        setIsLoading(false);
       }
+    } else {
+      setIsLoading(false);
     }
   }
 
@@ -55,6 +75,16 @@ function Login() {
     supabase.auth.signInWithOAuth({
       provider: "linkedin_oidc",
     });
+  }
+
+  async function handleSignInWithFacebook() {
+    // Placeholder function - functionality not implemented
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider: "facebook",
+    });
+
+    console.log(data);
+    console.log(error);
   }
 
   async function handleSignInWithGoogle() {
@@ -197,6 +227,37 @@ function Login() {
           {/* Login Form Card */}
           <div className="rounded-lg bg-white p-8 shadow-lg">
             <form onSubmit={handleLogin} className="space-y-6">
+              {/* Error Display */}
+              {error && (
+                <div className="rounded-md bg-red-50 p-4">
+                  <div className="flex">
+                    <div className="flex-shrink-0">
+                      <svg
+                        className="h-5 w-5 text-red-400"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                        />
+                      </svg>
+                    </div>
+                    <div className="ml-3">
+                      <h3 className="text-sm font-medium text-red-800">
+                        Authentication Error
+                      </h3>
+                      <div className="mt-2 text-sm text-red-700">
+                        <p>{error}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
               <div>
                 <label
                   htmlFor="email"
@@ -212,6 +273,7 @@ function Login() {
                   className="w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="Enter your email"
                   required
+                  disabled={isLoading}
                 />
               </div>
 
@@ -230,6 +292,7 @@ function Login() {
                   className="w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="Enter your password"
                   required
+                  disabled={isLoading}
                 />
               </div>
 
@@ -244,9 +307,36 @@ function Login() {
 
               <button
                 type="submit"
-                className="flex w-full justify-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition duration-150 ease-in-out hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                disabled={isLoading}
+                className="flex w-full justify-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition duration-150 ease-in-out hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
               >
-                Sign In
+                {isLoading ? (
+                  <>
+                    <svg
+                      className="-ml-1 mr-3 h-4 w-4 animate-spin"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      ></circle>
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                      ></path>
+                    </svg>
+                    Signing in...
+                  </>
+                ) : (
+                  "Sign In"
+                )}
               </button>
             </form>
           </div>
@@ -322,6 +412,20 @@ function Login() {
                 </svg>
                 LinkedIn
               </button>
+
+              <button
+                onClick={handleSignInWithFacebook}
+                className="flex items-center justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm transition duration-150 ease-in-out hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+              >
+                <svg
+                  className="mr-2 h-5 w-5"
+                  fill="#1877F2"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+                </svg>
+                Facebook
+              </button>
             </div>
           </div>
 
@@ -389,6 +493,26 @@ function Login() {
                   />
                 </svg>
                 Continue Anonymously
+              </button>
+
+              <button
+                onClick={handleSignInWithSAML}
+                className="flex w-full items-center justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm transition duration-150 ease-in-out hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+              >
+                <svg
+                  className="mr-2 h-5 w-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                  />
+                </svg>
+                Continue with example.com
               </button>
             </div>
           </div>

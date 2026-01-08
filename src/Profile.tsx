@@ -93,7 +93,9 @@ function Profile() {
   const handleUpdateMetaData = async () => {
     const { data, error } = await supabase.auth.updateUser({
       data: {
-        mfa_required: true,
+        custom_claims: {
+          org: "admin",
+        },
       },
     });
 

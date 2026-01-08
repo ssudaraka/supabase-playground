@@ -20,6 +20,7 @@ import EnrollMfaPhone from "./EnrollMfaPhone.tsx";
 import PasswordlessLoginEmail from "./PasswordlessLoginEmail.tsx";
 import EdgeFunctions from "./EdgeFunctions.tsx";
 import Admin from "./Admin.tsx";
+import ExternalAPI from "./ExternalAPI.tsx";
 
 import "./index.css";
 
@@ -99,6 +100,10 @@ const router = createBrowserRouter([
       {
         path: "edge-functions",
         element: <EdgeFunctions />,
+      },
+      {
+        path: "external-api",
+        element: <ExternalAPI />,
       },
     ],
   },

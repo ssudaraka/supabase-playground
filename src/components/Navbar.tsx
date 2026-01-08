@@ -86,6 +86,25 @@ function Navbar({ session }) {
                 </svg>
                 <span>Edge Functions</span>
               </a>
+              <a
+                href="/external-api"
+                className="flex items-center space-x-2 rounded-md px-3 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-100 hover:text-gray-900"
+              >
+                <svg
+                  className="h-4 w-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M13 10V3L4 14h7v7l9-11h-7z"
+                  />
+                </svg>
+                <span>External API</span>
+              </a>
             </div>
           )}
 
@@ -194,6 +213,12 @@ function Navbar({ session }) {
                 className="block rounded-md px-3 py-2 text-base font-medium text-gray-700 transition-colors hover:bg-gray-100 hover:text-gray-900"
               >
                 Edge Functions
+              </a>
+              <a
+                href="/external-api"
+                className="block rounded-md px-3 py-2 text-base font-medium text-gray-700 transition-colors hover:bg-gray-100 hover:text-gray-900"
+              >
+                External API
               </a>
             </div>
           </div>

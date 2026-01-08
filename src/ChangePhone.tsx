@@ -16,6 +16,10 @@ const ChangePhone = () => {
     console.log(error);
 
     if (!error) {
+      localStorage.setItem(
+        "change_phone_number",
+        phoneRef?.current?.value ?? "",
+      );
       return navigate("/confirm-phone-change");
     }
   }
@@ -32,7 +36,7 @@ const ChangePhone = () => {
         ></input>
         <button
           type="submit"
-          className="mt-3 ml-2 inline-flex items-center justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 "
+          className="ml-2 mt-3 inline-flex items-center justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
         >
           Update
         </button>
