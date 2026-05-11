@@ -21,6 +21,7 @@ import PasswordlessLoginEmail from "./PasswordlessLoginEmail.tsx";
 import EdgeFunctions from "./EdgeFunctions.tsx";
 import Admin from "./Admin.tsx";
 import ExternalAPI from "./ExternalAPI.tsx";
+import Storage from "./Storage.tsx";
 
 import "./index.css";
 
@@ -104,6 +105,10 @@ const router = createBrowserRouter([
       {
         path: "external-api",
         element: <ExternalAPI />,
+      },
+      {
+        path: "storage",
+        element: <Storage />,
       },
     ],
   },

@@ -1,10 +1,12 @@
 import { supabase } from "./utils/supabaseClient";
 import { useNavigate } from "react-router-dom";
-import { useRef } from "react";
+import { Turnstile } from "@marsidev/react-turnstile";
+import { useRef, useState } from "react";
 
 const PasswordlessLogin = () => {
   const navigate = useNavigate();
   const phoneRef = useRef<HTMLInputElement>(null);
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
 
   async function handlePasswordlessLogin(e) {
     e.preventDefault();
@@ -12,6 +14,9 @@ const PasswordlessLogin = () => {
     if (phoneRef.current) {
       const { data, error } = await supabase.auth.signInWithOtp({
         phone: phoneRef.current.value,
+        options: {
+          captchaToken: captchaToken
+        }
       });
 
       if (error) {
@@ -57,6 +62,7 @@ const PasswordlessLogin = () => {
           className="block w-full py-1 px-1 rounded border border-gray-200"
           placeholder="Enter your phone number"
         />
+        <Turnstile siteKey="0x4AAAAAACOFSkopvZxoXAcL" onSuccess={(token) => setCaptchaToken(token)} />
         <button
           type="submit"
           className="bg-green-400 border py-2 rounded-md w-full mt-4"

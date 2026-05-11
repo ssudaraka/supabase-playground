@@ -111,22 +111,12 @@ function Profile() {
   };
 
   const handleLinkIdentity = async () => {
-    const user = await supabase.auth.getUser();
-    console.log(user);
-    if (!user.data?.user?.is_anonymous) {
-      setMessage({ type: "error", text: "Not an anonymous user" });
-      return;
-    }
     const { data, error } = await supabase.auth.linkIdentity({
       provider: "google",
     });
 
     console.log(data);
     console.log(error);
-    setMessage({
-      type: "success",
-      text: "Identity linking attempted - check console",
-    });
   };
 
   const handleGetClaims = async () => {
